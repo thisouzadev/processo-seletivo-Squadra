@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PokemonDetail } from "./interfaces/PokemonDetail";
+import { PokemonDetail } from "../interfaces/PokemonDetail";
 
 export interface ListPokemonsInterface {
   count: number;
@@ -9,7 +9,7 @@ export interface ListPokemonsInterface {
 }
 
 export async function listPokemons(): Promise<ListPokemonsInterface> {
-  const endpoint = 'https://pokeapi.co/api/v2/pokemon'
+  const endpoint = `${process.env.REACT_APP_POKEAPI}/pokemon`
   const response = await axios.get<ListPokemonsInterface>(endpoint)
 
   return response.data
