@@ -72,11 +72,11 @@ const PokedexCard: React.FC<PokedexCardProps> = ({ pokemon }) => {
         />
         
         <Button variant="outlined" onClick={toggleVisibility}>
-          {isVisible ? 'Esconder informações' : 'Mostrar informações'}
+          {isVisible ? 'Esconder informações' : 'Fraqueza / Força'}
         </Button>
         <div style={{ display: 'flex' }}>
           <Box display={isVisible ? 'block' : 'none'} py={2}>
-            <Typography variant="h6">Fraquezas</Typography>
+            <Typography variant="h6">Fraqueza</Typography>
             <ul>
               {pokemon.weaknesses &&
                 pokemon.weaknesses.map((weakness, index) => (

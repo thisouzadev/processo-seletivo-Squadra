@@ -37,32 +37,29 @@ export const Pokedex: React.FC<PokedexProps> = () => {
   const handleFilter = async () => {
     setLoading(true);
   
-    try {
-      let response;
-  
-      if (nameFilter === '' && weaknessFilter === '' && typeFilter === '') {
-        response = await listPokemons(currentPage, additionalPokemons);
-      } else {
-        response = await listPokemons(currentPage, additionalPokemons, nameFilter, typeFilter, weaknessFilter);
-      }
-  
-      setPokemons(response.results);
-      setTotalPages(Math.ceil(response.count / additionalPokemons));
-    } catch (error) {
-      console.error('Erro ao filtrar os Pokémon:', error);
-    } finally {
+    if (nameFilter === '' && weaknessFilter === '' && typeFilter === '') {
+      getListPokemons();
       setLoading(false);
+      return;
     }
-  };
-
-  const handleClearFilters = () => {
-    setNameFilter('');
-    setTypeFilter('');
-    setWeaknessFilter('');
-    handleFilter()
-  };
-
   
+    const response = await listPokemons(1);
+    const filteredPokemons = response.results.filter(pokemon => 
+      (nameFilter === '' || pokemon.name.toLowerCase().includes(nameFilter.toLowerCase())) &&
+      (typeFilter === '' || pokemon.types.some(type => type.type.name === typeFilter)) &&
+      (!pokemon.weaknesses || weaknessFilter === '' || pokemon.weaknesses.includes(weaknessFilter))
+    );
+  
+    setPokemons(filteredPokemons);
+    setLoading(false);
+  };
+
+  const getListPokemons = async () => {
+    const response = await listPokemons(currentPage, additionalPokemons);
+    setPokemons(response.results);
+    setTotalPages(Math.ceil(response.count / 10));
+  };
+
   useEffect(() => {
     handleFilter()
   }, [currentPage, additionalPokemons]);
@@ -137,7 +134,6 @@ export const Pokedex: React.FC<PokedexProps> = () => {
             </Select>
           </FormControl>
           <Button variant="contained" onClick={handleFilter} sx={{ ml: 2 }}>Filtrar</Button>
-          <Button variant="contained" onClick={handleClearFilters} sx={{ ml: 2 }}>Limpar</Button>
         </Box>
 
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
