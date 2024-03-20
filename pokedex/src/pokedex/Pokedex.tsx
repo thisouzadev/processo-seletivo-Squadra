@@ -30,7 +30,7 @@ export const Pokedex: React.FC<PokedexProps> = () => {
   const [additionalPokemons, setAdditionalPokemons] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleChange = (event, value: number) => {
+  const handleChange = (event: any, value: number) => {
     setCurrentPage(value);
   };
 

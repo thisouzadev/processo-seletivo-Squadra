@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { readFavoritePokemonIds } from '../pokemon/services/favoritePokemon';
 import PokedexCard from '../pokedex/components/PokedexCard';

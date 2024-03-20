@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardMedia, CardHeader, Button, Typography, Box, CardActions, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { PokemonDetail } from '../../pokemon/interfaces/PokemonDetail';
 import { Favorite } from '@mui/icons-material';
-import { addPokemonToFavorites, removePokemonFromFavorites, readFavoritePokemonIds, updateFavoritePokemons } from '../../pokemon/services/favoritePokemon';
+import { readFavoritePokemonIds, updateFavoritePokemons } from '../../pokemon/services/favoritePokemon';
 
 const typeColors: { [key: string]: string } = {
   normal: '#A8A77A',
