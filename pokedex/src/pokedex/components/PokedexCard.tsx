@@ -49,6 +49,9 @@ const PokedexCard: React.FC<PokedexCardProps> = ({ pokemon }) => {
     setIsFavorite(!isFavorite);
   };
 
+  const hasWeaknesses = pokemon.weaknesses && pokemon.weaknesses.length > 0;
+  const hasStrengths = pokemon.strengths && pokemon.strengths.length > 0;
+  const hasWeaknessesOrStrengths = hasWeaknesses || hasStrengths;
   return (
     <Card style={{ backgroundColor: color, color: '#FFF' }}>
       <Box display="flex" >
@@ -71,9 +74,11 @@ const PokedexCard: React.FC<PokedexCardProps> = ({ pokemon }) => {
           subheader={pokemon.types.map((type) => type.type.name).join(', ')}
         />
         
+          {hasWeaknessesOrStrengths && (
         <Button variant="outlined" onClick={toggleVisibility}>
           {isVisible ? 'Esconder informações' : 'Fraqueza / Força'}
         </Button>
+      )}
         <div style={{ display: 'flex' }}>
           <Box display={isVisible ? 'block' : 'none'} py={2}>
             <Typography variant="h6">Fraqueza</Typography>
@@ -95,9 +100,6 @@ const PokedexCard: React.FC<PokedexCardProps> = ({ pokemon }) => {
           </Box>
         </div>
       </Box>
-      <Button component={Link} to={`/pokemon/${pokemon}`} size="small">
-        Detalhes
-      </Button>
     </Card>
   );
 };

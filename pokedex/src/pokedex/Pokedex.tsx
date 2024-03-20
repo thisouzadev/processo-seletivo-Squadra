@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { listPokemons } from '../pokemon/services/listPokemons';
 
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Container, Grid, Pagination, Button, FormControl, InputLabel, Select, TextField, MenuItem, CircularProgress } from '@mui/material';
 import PokedexCard from './components/PokedexCard';
 import { PokemonDetail } from '../pokemon/interfaces/PokemonDetail';
 import { Welcome } from '../pokemon/interfaces/PokemonType';
 import { getPokemonTypeRelation } from '../pokemon/services/getPokemonTypeRelation';
+import Header from '../components/Header';
+import { useThemeContext } from '../ThemeContext';
 
 interface PokedexProps {
 
 }
 
 export const Pokedex: React.FC<PokedexProps> = () => {
+  const { theme } = useThemeContext();
+
   const [pokemons, setPokemons] = useState<PokemonDetail[]>([])
   const [totalPages, setTotalPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -78,26 +78,9 @@ export const Pokedex: React.FC<PokedexProps> = () => {
   }, []);
 
   return (
-    <div>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Pokedex
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </Box>
-
+    <Box sx={{ backgroundColor: theme === 'light' ? '#fff' : '#333' }}>
+      <Header />
+    <Container>
       <Container maxWidth="lg">
         <Box mt={4} display='flex' justifyContent='center' alignItems='center'>
           <TextField
@@ -166,7 +149,8 @@ export const Pokedex: React.FC<PokedexProps> = () => {
           />
         </Box>
       </Container>
-    </div>
+      </Container>
+    </Box>
   );
 };
 
