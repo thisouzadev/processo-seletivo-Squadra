@@ -3,18 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.14",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.91",
-    "@types/react": "^18.2.67",
-    "@types/react-dom": "^18.2.22",
     "axios": "^1.6.8",
-    "crypto-browserify": "^3.12.0",
     "dotenv": "^16.4.5",
-    "os-browserify": "^0.3.0",
-    "path-browserify": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -44,5 +42,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.67",
+    "@types/react-dom": "^18.2.22",
+    "crypto-browserify": "^3.12.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "react-app-rewired": "^2.2.1",
+    "ts-loader": "^9.5.1"
   }
 }

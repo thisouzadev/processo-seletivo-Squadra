@@ -2,7 +2,7 @@ import axios from "axios";
 import { PokemonDetail } from "../interfaces/PokemonDetail";
 
 export async function getPokemonsDetails(name: string): Promise<PokemonDetail> {
-  const endpoint = `${process.env.REACT_APP_POKEAPI}/pokemon/${name}`;
+  const endpoint = `https://pokeapi.co/api/v2/pokemon/${name}`;
   console.log("Endpoint:", endpoint);
   const response = await axios.get<PokemonDetail>(endpoint);
 
