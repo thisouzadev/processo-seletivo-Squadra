@@ -1,89 +1,178 @@
 import React, { useEffect, useState } from 'react';
-import {  PokemonListInterface, listPokemons } from '../pokemon/services/listPokemons';
-import { getPokemonsDetails } from '../pokemon/services/getPokemonDetails';
-import { PokemonDetail } from '../pokemon/interfaces/PokemonDetail';
+import { listPokemons } from '../pokemon/services/listPokemons';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Container, Grid } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
+import { Container, Grid, Pagination, Button, FormControl, InputLabel, Select, TextField, MenuItem, CircularProgress } from '@mui/material';
+import PokedexCard from './components/PokedexCard';
+import { PokemonDetail } from '../pokemon/interfaces/PokemonDetail';
+import { Welcome } from '../pokemon/interfaces/PokemonType';
+import { getPokemonTypeRelation } from '../pokemon/services/getPokemonTypeRelation';
 
 interface PokedexProps {
-  
+
 }
 
 export const Pokedex: React.FC<PokedexProps> = () => {
-  const [pokemons, setPokemons] = useState<PokemonListInterface[]>([])
-  const [selectedPokemon, setSelectPokemon] = useState<PokemonListInterface | undefined>(undefined)
-  const [selectedPokemonDetails, setSelectedPokemonDetails] = useState<PokemonDetail | undefined>(undefined)
-  useEffect(() =>{
-    listPokemons().then((response) => setPokemons(response.results))
-  }, [])
+  const [pokemons, setPokemons] = useState<PokemonDetail[]>([])
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  useEffect(() =>{
-    if (!selectedPokemon) return;
-    getPokemonsDetails(selectedPokemon.name)
-      .then((response) => setSelectedPokemonDetails(response))
-  }, [selectedPokemon])
+  const [pokemonTypes, setPokemonTypes] = useState<Welcome[]>([]);
+  const [nameFilter, setNameFilter] = useState<string>('');
+  const [typeFilter, setTypeFilter] = useState<string>('');
+  const [weaknessFilter, setWeaknessFilter] = useState<string>('');
+  const [additionalPokemons, setAdditionalPokemons] = useState<number>(10);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleChange = (event, value: number) => {
+    setCurrentPage(value);
+  };
+
+  const handleFilter = async () => {
+    setLoading(true);
+  
+    try {
+      let response;
+  
+      if (nameFilter === '' && weaknessFilter === '' && typeFilter === '') {
+        response = await listPokemons(currentPage, additionalPokemons);
+      } else {
+        response = await listPokemons(currentPage, additionalPokemons, nameFilter, typeFilter, weaknessFilter);
+      }
+  
+      setPokemons(response.results);
+      setTotalPages(Math.ceil(response.count / additionalPokemons));
+    } catch (error) {
+      console.error('Erro ao filtrar os Pokémon:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClearFilters = () => {
+    setNameFilter('');
+    setTypeFilter('');
+    setWeaknessFilter('');
+    handleFilter()
+  };
+
+  
+  useEffect(() => {
+    handleFilter()
+  }, [currentPage, additionalPokemons]);
+
+  useEffect(() => {
+    const fetchPokemonTypes = async () => {
+      const allPokemonTypes: Welcome[] = [];
+      for (let i = 1; i <= 18; i++) {
+        const typeResponse = await getPokemonTypeRelation(i.toString());
+        allPokemonTypes.push(typeResponse);
+      }
+      setPokemonTypes(allPokemonTypes);
+    };
+
+    fetchPokemonTypes();
+  }, []);
 
   return (
     <div>
-         <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Pokedex
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Pokedex
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Box>
 
-    <Container maxWidth="lg">
-        <Box component="section" mt={10}>
-          <Typography variant="h5" gutterBottom>
-            Pokemons:
-          </Typography>
-          <Grid container spacing={2}>
-            {pokemons.map((pokemon) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={pokemon.name}>
-                <Card variant="outlined">
-                  <CardContent>
-                    <Typography variant="h5" component="div">
-                      {pokemon.name}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button onClick={() => setSelectPokemon(pokemon)} size="small">Abrir</Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-          <Typography variant="h6" gutterBottom>
-            Pokemon selecionado: {selectedPokemon?.name || "Nenhum pokemon selecionado"}
-          </Typography>
-          {JSON.stringify(selectedPokemonDetails, undefined, 2)}
+      <Container maxWidth="lg">
+        <Box mt={4} display='flex' justifyContent='center' alignItems='center'>
+          <TextField
+            label="Nome do Pokémon"
+            variant="outlined"
+            value={nameFilter}
+            onChange={(e) => setNameFilter(e.target.value)}
+          />
+          <FormControl variant="outlined" sx={{ m: 1, minWidth: 80 }}>
+            <InputLabel>Tipo</InputLabel>
+            <Select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value as string)}
+              label="Tipo"
+            >
+              <MenuItem value="">Todos</MenuItem>
+              {pokemonTypes.map((type) => (
+                <MenuItem key={type.name} value={type.name}>{type.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl variant="outlined" sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel>Fraqueza</InputLabel>
+            <Select
+              value={weaknessFilter}
+              onChange={(e) => setWeaknessFilter(e.target.value as string)}
+              label="Fraqueza"
+            >
+              <MenuItem value=""><em>Todas</em></MenuItem>
+              {pokemonTypes.map((type) => (
+                <MenuItem key={type.name} value={type.name}>{type.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button variant="contained" onClick={handleFilter} sx={{ ml: 2 }}>Filtrar</Button>
+          <Button variant="contained" onClick={handleClearFilters} sx={{ ml: 2 }}>Limpar</Button>
+        </Box>
+
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              pokemons encontrado {pokemons.length}
+            </Typography>
+        {loading ? (
+          <Box display="flex" justifyContent="center" mt={4}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Box component="section" mt={5}>
+            <Grid container spacing={2}>
+              {pokemons.map((pokemon) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={pokemon.name}>
+                  <PokedexCard pokemon={pokemon} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
+      </Container>
+      <Container>
+        <Box mt={2} display='flex' justifyContent='center' alignItems='center'>
+          <Pagination count={totalPages} page={currentPage} onChange={handleChange} />
+          <TextField
+            label="Quantidade adicional de Pokemon"
+            type="number"
+            value={additionalPokemons}
+            onChange={(e) => setAdditionalPokemons(parseInt(e.target.value))}
+          />
         </Box>
       </Container>
-
     </div>
   );
 };
 
 export default Pokedex;
+
