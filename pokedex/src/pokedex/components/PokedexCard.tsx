@@ -26,7 +26,7 @@ const typeColors: { [key: string]: string } = {
 };
 
 interface PokedexCardProps {
-  pokemon: PokemonDetail;
+  pokemon: Pick<PokemonDetail, 'id' | 'name' | 'sprites' | 'types' | 'weaknesses' | 'strengths'>;
 }
 
 const PokedexCard: React.FC<PokedexCardProps> = ({ pokemon }) => {
@@ -52,7 +52,7 @@ const PokedexCard: React.FC<PokedexCardProps> = ({ pokemon }) => {
   const hasStrengths = pokemon.strengths && pokemon.strengths.length > 0;
   const hasWeaknessesOrStrengths = hasWeaknesses || hasStrengths;
   return (
-    <Card style={{ backgroundColor: color, color: '#FFF' }}>
+    <Card data-testid="pokemon-card" style={{ backgroundColor: color, color: '#FFF' }}>
       <Box display="flex" >
       <CardMedia
         component="img"
