@@ -43,7 +43,6 @@ const PokedexCard: React.FC<PokedexCardProps> = ({ pokemon }) => {
   const color = typeColors[pokemon.types[0].type.name];
   
   const handleFavoriteToggle = () => {
-    console.log(pokemon);
     updateFavoritePokemons(pokemon.id, !isFavorite);
     setIsFavorite(!isFavorite);
   };

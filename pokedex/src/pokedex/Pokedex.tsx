@@ -51,7 +51,6 @@ export const Pokedex: React.FC<PokedexProps> = () => {
     );
   
     setPokemons(filteredPokemons);
-    console.log(pokemons);
     
     setLoading(false);
   };
@@ -59,7 +58,6 @@ export const Pokedex: React.FC<PokedexProps> = () => {
   const getListPokemons = async () => {
     const response = await listPokemons(currentPage, additionalPokemons);
     setPokemons(response.results);
-    console.log(pokemons);
     setTotalPages(Math.ceil(response.count / 10));
   };
 

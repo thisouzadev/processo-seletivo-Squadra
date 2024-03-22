@@ -9,7 +9,6 @@ describe('getPokemonTypeRelation function', () => {
   it('fetches pokemon types correctly', async () => {
     const mockAxios = new MockAdapter(axios);
 
-    // Mocking response for each type of pokemon
     pokemonTypes.forEach((type) => {
       const MOCK_POKEMON_TYPE: Welcome = {
         id: 1,
@@ -34,7 +33,6 @@ describe('getPokemonTypeRelation function', () => {
       mockAxios.onGet(`https://pokeapi.co/api/v2/type/${type}`).reply(200, MOCK_POKEMON_TYPE);
     });
 
-    // Fetch and test each pokemon type
     const promises = pokemonTypes.map(async (type) => {
       const result = await getPokemonTypeRelation(type);
       const expectedType: Welcome = {
