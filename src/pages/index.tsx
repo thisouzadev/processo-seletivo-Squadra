@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react'
 import axios from 'axios'
 import { GetStaticProps } from 'next'
@@ -13,7 +12,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
 import PokemonCard from '@/components/PokemonCard'
-import { Pokemon } from './types'
+import { Pokemon, PokemonType, Sprites } from './types'
 import PokemonNaoEncontrado from '@/components/PokemonNaoEncontrado'
 
 interface HomeProps {
@@ -47,7 +46,7 @@ export const getStaticProps: GetStaticProps = async () => {
       'https://pokeapi.co/api/v2/pokemon?limit=1000',
     )
     const pokemonList: Pokemon[] = await limitedPromiseAll(
-      response.data.results.map((pokemon: any) => ({
+      response.data.results.map((pokemon: { name: string; url: string }) => ({
         name: pokemon.name,
         url: pokemon.url,
       })),
@@ -81,26 +80,26 @@ export const limitedPromiseAll = async (
       requests.slice(i * limit, (i + 1) * limit).map(async (pokemon) => {
         try {
           const detailsResponse = await axios.get(pokemon.url)
-          const types = detailsResponse.data.types.map(
-            (type: string) => type.type.name,
+          const types: string[] = detailsResponse.data.types.map(
+            (type: PokemonType) => type.type.name,
           )
           const weaknessesResponse = await axios.get(
             `https://pokeapi.co/api/v2/type/${types[0]}/`,
           )
-          const weaknesses =
+          const weaknesses: string[] =
             weaknessesResponse.data.damage_relations.double_damage_from.map(
-              (weakness: string) => weakness.name,
+              (weakness: { name: string }) => weakness.name,
             )
-
-          const sprites = detailsResponse.data.sprites
-          const animatedFrontDefault =
+          const id: number = detailsResponse.data.id
+          const sprites: Sprites = detailsResponse.data.sprites
+          const animatedFrontDefault: string | null =
             sprites.versions['generation-v']['black-white'].animated
               .front_default
 
           return {
             name: pokemon.name,
             url: pokemon.url,
-            id: detailsResponse.data.id,
+            id,
             details: {
               types,
               weaknesses,
@@ -162,15 +161,15 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
     const nameMatch = pokemon.name
       .toLowerCase()
       .includes(filters.name.toLowerCase())
-    const typesMatch = Object.keys(filters.types).every(
+    const typesMatch: boolean = Object.keys(filters.types).every(
       (type) =>
-        !filters.types[type] ||
-        (pokemon.details && pokemon.details.types.includes(type)),
+        !filters.types[type as keyof (typeof filters)['types']] ||
+        (pokemon.details && pokemon.details.types?.includes(type))!,
     )
-    const weaknessesMatch = Object.keys(filters.weaknesses).every(
+    const weaknessesMatch: boolean = Object.keys(filters.weaknesses).every(
       (type) =>
-        !filters.weaknesses[type] ||
-        (pokemon.details && pokemon.details.weaknesses.includes(type)),
+        !filters.weaknesses[type as keyof (typeof filters)['weaknesses']] ||
+        (pokemon.details && pokemon.details.weaknesses?.includes(type))!,
     )
     return nameMatch && typesMatch && weaknessesMatch
   })
@@ -196,7 +195,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
                 key={type}
                 control={
                   <Controller
-                    name={`types.${type}`}
+                    name={`types.${type}` as const}
                     control={control}
                     render={({ field }) => (
                       <Checkbox {...field} checked={field.value} />
@@ -216,7 +215,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
                 key={type}
                 control={
                   <Controller
-                    name={`weaknesses.${type}`}
+                    name={`weaknesses.${type}` as const}
                     control={control}
                     render={({ field }) => (
                       <Checkbox {...field} checked={field.value} />
