@@ -240,11 +240,20 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
             ))
         )}
       </Grid>
-      {visiblePokemon < filteredPokemonList.length && (
-        <Button variant="contained" color="primary" onClick={handleLoadMore}>
-          Load More
-        </Button>
-      )}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 20,
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        {visiblePokemon < filteredPokemonList.length && (
+          <Button variant="contained" color="primary" onClick={handleLoadMore}>
+            Buscar Mais
+          </Button>
+        )}
+      </div>
     </Container>
   )
 }
