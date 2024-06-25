@@ -70,11 +70,15 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
 
   useEffect(() => {
     const favoritePokemonIds = readFavoritePokemonIds()
-    setIsFavorite(favoritePokemonIds.includes(pokemon.id))
+    if (pokemon.id !== undefined) {
+      setIsFavorite(favoritePokemonIds.includes(pokemon.id))
+    }
   }, [pokemon.id])
 
   const handleFavoriteToggle = () => {
-    updateFavoritePokemons(pokemon.id, !isFavorite)
+    if (pokemon.id !== undefined) {
+      updateFavoritePokemons(pokemon.id, !isFavorite)
+    }
     setIsFavorite(!isFavorite)
   }
 
@@ -110,7 +114,10 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
                 Tipo: {pokemon.details.types.join(', ')}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                Fraqueza: {pokemon.details.weaknesses.join(', ')}
+                Fraqueza:{' '}
+                {pokemon?.details.weaknesses
+                  ? pokemon.details.weaknesses.join(', ')
+                  : 'Nenhuma fraqueza conhecida'}
               </Typography>
             </CardContent>
           </>

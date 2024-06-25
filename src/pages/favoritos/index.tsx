@@ -52,8 +52,9 @@ const FavoritePokemons: React.FC<FavoritePokemonsProps> = ({ pokemonList }) => {
 
     const fetchFavoritePokemons = async () => {
       const favoritePokemonIds = readFavoritePokemonIds()
-      const filteredPokemons = pokemonList.filter((pokemon) =>
-        favoritePokemonIds.includes(pokemon.id),
+      const filteredPokemons = pokemonList.filter(
+        (pokemon) =>
+          pokemon.id !== undefined && favoritePokemonIds.includes(pokemon.id),
       )
       setFavoritePokemons(filteredPokemons)
     }
@@ -67,7 +68,7 @@ const FavoritePokemons: React.FC<FavoritePokemonsProps> = ({ pokemonList }) => {
         <div style={{ marginTop: `1em` }}>
           <Grid container spacing={2}>
             {favoritePokemons.map((pokemon) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={pokemon.name}>
+              <Grid item xs={12} sm={6} md={4} lg={3} key={pokemon.id}>
                 <PokemonCard pokemon={pokemon} />
               </Grid>
             ))}

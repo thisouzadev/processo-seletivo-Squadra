@@ -38,8 +38,9 @@ const POKEMON_TYPES = [
   'dragon',
   'dark',
   'fairy',
-]
+] as const
 
+type PokemonTypeDetails = (typeof POKEMON_TYPES)[number]
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const response = await axios.get(
@@ -136,17 +137,17 @@ export const limitedPromiseAll = async (
 }
 
 const Home: React.FC<HomeProps> = ({ pokemonList }) => {
-  const [visiblePokemon, setVisiblePokemon] = useState(10) // Show 10 Pokémon initially
+  const [visiblePokemon, setVisiblePokemon] = useState(10)
   const { register, handleSubmit, control, watch } = useForm({
     defaultValues: {
       name: '',
       types: POKEMON_TYPES.reduce(
         (acc, type) => ({ ...acc, [type]: false }),
-        {},
+        {} as Record<PokemonTypeDetails, boolean>,
       ),
       weaknesses: POKEMON_TYPES.reduce(
         (acc, type) => ({ ...acc, [type]: false }),
-        {},
+        {} as Record<PokemonTypeDetails, boolean>,
       ),
     },
   })
@@ -198,7 +199,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
                     name={`types.${type}` as const}
                     control={control}
                     render={({ field }) => (
-                      <Checkbox {...field} checked={field.value} />
+                      <Checkbox {...field} checked={Boolean(field.value)} />
                     )}
                   />
                 }
@@ -218,7 +219,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
                     name={`weaknesses.${type}` as const}
                     control={control}
                     render={({ field }) => (
-                      <Checkbox {...field} checked={field.value} />
+                      <Checkbox {...field} checked={Boolean(field.value)} />
                     )}
                   />
                 }
