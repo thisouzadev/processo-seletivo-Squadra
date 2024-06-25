@@ -14,6 +14,7 @@ import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
 import PokemonCard from '@/components/PokemonCard'
 import { Pokemon } from './types'
+import PokemonNaoEncontrado from '@/components/PokemonNaoEncontrado'
 
 interface HomeProps {
   pokemonList: Pokemon[]
@@ -229,9 +230,15 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
         </FormControl>
       </form>
       <Grid container spacing={3}>
-        {filteredPokemonList.slice(0, visiblePokemon).map((pokemon, index) => (
-          <PokemonCard key={index} pokemon={pokemon} />
-        ))}
+        {filteredPokemonList.length === 0 ? (
+          <PokemonNaoEncontrado />
+        ) : (
+          filteredPokemonList
+            .slice(0, visiblePokemon)
+            .map((pokemon, index) => (
+              <PokemonCard key={index} pokemon={pokemon} />
+            ))
+        )}
       </Grid>
       {visiblePokemon < filteredPokemonList.length && (
         <Button variant="contained" color="primary" onClick={handleLoadMore}>
