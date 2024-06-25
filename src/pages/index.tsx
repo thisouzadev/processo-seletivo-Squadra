@@ -6,8 +6,6 @@ import { useForm, Controller } from 'react-hook-form'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import UnoptimizedImage from '@/components/UnoptimizedImage'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
@@ -70,7 +68,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 }
 
-const limitedPromiseAll = async (
+export const limitedPromiseAll = async (
   requests: { name: string; url: string }[],
   limit = 10,
 ): Promise<Pokemon[]> => {
@@ -101,6 +99,7 @@ const limitedPromiseAll = async (
           return {
             name: pokemon.name,
             url: pokemon.url,
+            id: detailsResponse.data.id,
             details: {
               types,
               weaknesses,
