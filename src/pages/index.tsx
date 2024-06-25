@@ -3,18 +3,18 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { GetStaticProps } from 'next'
 import { useForm, Controller } from 'react-hook-form'
-import UnoptimizedImage from '@/components/UnoptimizedImage'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
+import UnoptimizedImage from '@/components/UnoptimizedImage'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
+import PokemonCard from '@/components/PokemonCard'
 import { Pokemon } from './types'
 
 interface HomeProps {
@@ -231,37 +231,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
       </form>
       <Grid container spacing={3}>
         {filteredPokemonList.slice(0, visiblePokemon).map((pokemon, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card>
-              {pokemon.details && (
-                <>
-                  <UnoptimizedImage
-                    src={
-                      pokemon.details.sprites.versions['generation-v'][
-                        'black-white'
-                      ].animated.front_default ||
-                      pokemon.details.sprites.front_default ||
-                      '/placeholder.png'
-                    }
-                    alt={`${pokemon.name} sprite`}
-                    width={100}
-                    height={100}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {pokemon.name}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      Tipo: {pokemon.details.types.join(', ')}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      Fraqueza: {pokemon.details.weaknesses.join(', ')}
-                    </Typography>
-                  </CardContent>
-                </>
-              )}
-            </Card>
-          </Grid>
+          <PokemonCard key={index} pokemon={pokemon} />
         ))}
       </Grid>
       {visiblePokemon < filteredPokemonList.length && (
