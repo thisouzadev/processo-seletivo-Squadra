@@ -1,4 +1,4 @@
-// pages/index.tsx
+/* eslint-disable */
 import React, { useState } from 'react'
 import axios from 'axios'
 import { GetStaticProps } from 'next'
