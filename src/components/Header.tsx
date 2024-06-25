@@ -1,4 +1,3 @@
-// Header.tsx
 import React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -6,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
-import { useThemeContext } from '../pages/ThemeContext'
+import { useThemeContext } from '../ThemeContext'
 import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import Brightness4Icon from '@mui/icons-material/Brightness4'

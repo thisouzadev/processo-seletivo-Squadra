@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 import { ThemeProvider, Theme } from '@mui/material/styles'
-import { lightTheme, darkTheme } from '../theme'
+import { lightTheme, darkTheme } from './theme'
 
 interface ThemeContextProps {
   toggleTheme: () => void

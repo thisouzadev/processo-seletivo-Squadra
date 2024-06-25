@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Grid } from '@mui/material'
 import PokemonCard from '../../components/PokemonCard'
-import { Pokemon } from '../types'
+import { Pokemon } from '../../types'
 import axios from 'axios'
 import { GetStaticProps } from 'next'
 import { limitedPromiseAll } from '../index'

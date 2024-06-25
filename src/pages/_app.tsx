@@ -5,7 +5,7 @@ import '../styles/globals.css'
 import CssBaseline from '@mui/material/CssBaseline'
 import { AppProps } from 'next/app'
 import Header from '@/components/Header'
-import { ThemeContextProvider } from './ThemeContext'
+import { ThemeContextProvider } from '../ThemeContext'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {

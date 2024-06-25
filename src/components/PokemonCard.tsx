@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import UnoptimizedImage from './UnoptimizedImage'
-import { Pokemon } from '../pages/types'
+import { Pokemon } from '../types'
 import { IconButton } from '@mui/material'
 import { Favorite } from '@mui/icons-material'
 

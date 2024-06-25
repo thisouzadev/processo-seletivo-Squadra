@@ -12,7 +12,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
 import PokemonCard from '@/components/PokemonCard'
-import { Pokemon, PokemonType, Sprites } from './types'
+import { Pokemon, PokemonType, Sprites } from '../types'
 import PokemonNaoEncontrado from '@/components/PokemonNaoEncontrado'
 
 interface HomeProps {
