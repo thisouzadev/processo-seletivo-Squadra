@@ -26,7 +26,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/pages/api/pokemonApi.ts "
+    "src/pages/api/pokemonApi.ts"
   ],
   "exclude": [
     "node_modules"

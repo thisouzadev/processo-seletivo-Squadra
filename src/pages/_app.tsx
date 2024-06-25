@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import theme from '../theme'
 import { AppProps } from 'next/app'
+import Header from '@/components/Header'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
@@ -17,6 +18,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ThemeProvider theme={theme}>
+      <Header></Header>
       <CssBaseline />
       <Component {...pageProps} />
     </ThemeProvider>
