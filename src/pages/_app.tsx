@@ -1,11 +1,11 @@
 // src/pages/_app.tsx
 
 import * as React from 'react'
-import { ThemeProvider } from '@mui/material/styles'
+import '../styles/globals.css'
 import CssBaseline from '@mui/material/CssBaseline'
-import theme from '../theme'
 import { AppProps } from 'next/app'
 import Header from '@/components/Header'
+import { ThemeContextProvider } from './ThemeContext'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
@@ -17,10 +17,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <ThemeProvider theme={theme}>
-      <Header></Header>
+    <ThemeContextProvider>
       <CssBaseline />
+      <Header />
       <Component {...pageProps} />
-    </ThemeProvider>
+    </ThemeContextProvider>
   )
 }
