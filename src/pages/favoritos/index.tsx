@@ -19,7 +19,7 @@ export const getStaticProps: GetStaticProps<
     )
 
     const pokemonList: Pokemon[] = await limitedPromiseAll(
-      response.data.results.map((pokemon: any) => ({
+      response.data.results.map((pokemon: { name: string; url: string }) => ({
         name: pokemon.name,
         url: pokemon.url,
       })),
