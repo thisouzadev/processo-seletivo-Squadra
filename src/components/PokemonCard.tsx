@@ -86,35 +86,75 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
 
   return (
     <Grid item xs={12} sm={6} md={4}>
-      <Card style={{ backgroundColor: color, color: '#FFF' }}>
+      <Card
+        sx={{
+          backgroundColor: color,
+          color: '#FFF',
+          borderRadius: 2,
+          boxShadow: 3,
+          padding: 2,
+          position: 'relative',
+        }}
+      >
         {pokemon.details && (
           <>
-            <IconButton
-              onClick={handleFavoriteToggle}
-              aria-label="add to favorites"
-            >
-              <Favorite color={isFavorite ? 'error' : 'disabled'} />
-            </IconButton>
-            <UnoptimizedImage
-              src={
-                pokemon.details.sprites.versions['generation-v']['black-white']
-                  .animated.front_default ||
-                pokemon.details.sprites.front_default ||
-                '/placeholder.png'
-              }
-              alt={`${pokemon.name} sprite`}
-              width={100}
-              height={100}
-            />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 {pokemon.name}
               </Typography>
+              <Typography gutterBottom variant="h5" component="div">
+                #{pokemon.id}
+              </Typography>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  position: 'relative',
+                }}
+              >
+                <UnoptimizedImage
+                  src={
+                    pokemon.details.sprites.versions['generation-v'][
+                      'black-white'
+                    ].animated.front_default ||
+                    pokemon.details.sprites.front_default ||
+                    '/placeholder.png'
+                  }
+                  alt={`${pokemon.name} sprite`}
+                  width={100}
+                  height={100}
+                  style={{
+                    transform: 'rotate(360deg)',
+                    transition: 'transform .7s ease-in-out',
+                  }}
+                  onMouseOver={(e: React.MouseEvent<HTMLImageElement>) =>
+                    (e.currentTarget.style.transform = 'rotate(360deg)')
+                  }
+                  onMouseOut={(e: React.MouseEvent<HTMLImageElement>) =>
+                    (e.currentTarget.style.transform = 'rotate(0deg)')
+                  }
+                />
+              </div>
+              <IconButton
+                onClick={handleFavoriteToggle}
+                aria-label="add to favorites"
+                sx={{
+                  color: isFavorite ? 'error.main' : 'action.disabled',
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                }}
+              >
+                <Favorite />
+              </IconButton>
+            </CardContent>
+            <CardContent>
               <Typography variant="body2" color="textSecondary">
-                Tipo: {pokemon.details.types.join(', ')}
+                Type: {pokemon.details.types.join(', ')}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                Fraqueza:{' '}
+                Weaknesses:{' '}
                 {pokemon?.details.weaknesses
                   ? pokemon.details.weaknesses.join(', ')
                   : 'Nenhuma fraqueza conhecida'}

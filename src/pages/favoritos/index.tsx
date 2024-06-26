@@ -63,19 +63,13 @@ const FavoritePokemons: React.FC<FavoritePokemonsProps> = ({ pokemonList }) => {
   }, [pokemonList])
 
   return (
-    <div>
-      <Container>
-        <div style={{ marginTop: `1em` }}>
-          <Grid container spacing={2}>
-            {favoritePokemons.map((pokemon) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={pokemon.id}>
-                <PokemonCard pokemon={pokemon} />
-              </Grid>
-            ))}
-          </Grid>
-        </div>
-      </Container>
-    </div>
+    <Container>
+      <Grid container spacing={3}>
+        {favoritePokemons.map((pokemon) => (
+          <PokemonCard key={pokemon.id} pokemon={pokemon} />
+        ))}
+      </Grid>
+    </Container>
   )
 }
 

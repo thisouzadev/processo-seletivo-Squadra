@@ -176,10 +176,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
   })
 
   return (
-    <Container>
-      <Typography variant="h2" gutterBottom>
-        Pokémon List
-      </Typography>
+    <Container sx={{ mb: '2rem' }}>
       <form onSubmit={handleSubmit(() => {})}>
         <TextField
           label="Search by Name"
@@ -189,7 +186,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
           style={{ marginBottom: '20px' }}
         />
         <FormControl component="fieldset" style={{ marginBottom: '20px' }}>
-          <Typography variant="h6">Filtro por Tipos</Typography>
+          <Typography variant="h6">Filter by Types</Typography>
           <FormGroup row>
             {POKEMON_TYPES.map((type) => (
               <FormControlLabel
@@ -209,7 +206,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
           </FormGroup>
         </FormControl>
         <FormControl component="fieldset" style={{ marginBottom: '20px' }}>
-          <Typography variant="h6">Filtro por Fraquezas</Typography>
+          <Typography variant="h6">Filter by Weaknesses</Typography>
           <FormGroup row>
             {POKEMON_TYPES.map((type) => (
               <FormControlLabel
@@ -235,8 +232,8 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
         ) : (
           filteredPokemonList
             .slice(0, visiblePokemon)
-            .map((pokemon, index) => (
-              <PokemonCard key={index} pokemon={pokemon} />
+            .map((pokemon) => (
+              <PokemonCard key={pokemon.id} pokemon={pokemon} />
             ))
         )}
       </Grid>

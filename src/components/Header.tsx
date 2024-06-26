@@ -10,22 +10,28 @@ import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
+import Image from 'next/image'
+import favicon from '../../public/favicon/favicon.png'
 
 const Header: React.FC = () => {
   const { toggleTheme, theme } = useThemeContext()
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ marginBottom: '2rem' }}>
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Meu Pokédex
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <Image src={favicon} width={30} height={30} alt="pokebola" />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Pokédex
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 2, marginLeft: 'auto' }}>
           <Link href="/" passHref>
             <Button color="inherit">Pokémon</Button>
           </Link>
           <Link href="/favoritos" passHref>
-            <Button color="inherit">Favoritos</Button>
+            <Button color="inherit">Favorites</Button>
           </Link>
           <Tooltip title="Toggle light/dark theme">
             <IconButton color="inherit" onClick={toggleTheme}>
