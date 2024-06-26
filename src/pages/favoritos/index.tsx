@@ -5,6 +5,7 @@ import { Pokemon } from '../../types'
 import axios from 'axios'
 import { GetStaticProps } from 'next'
 import { limitedPromiseAll } from '../index'
+import { readFavoritePokemonIds } from '@/services/favoritePokemon'
 
 interface FavoritePokemonsProps {
   pokemonList: Pokemon[]
@@ -45,11 +46,6 @@ const FavoritePokemons: React.FC<FavoritePokemonsProps> = ({ pokemonList }) => {
   const [favoritePokemons, setFavoritePokemons] = useState<Pokemon[]>([])
 
   useEffect(() => {
-    const readFavoritePokemonIds = (): number[] => {
-      const favoritePokemonIdsJson = localStorage.getItem('favoritePokemonIds')
-      return favoritePokemonIdsJson ? JSON.parse(favoritePokemonIdsJson) : []
-    }
-
     const fetchFavoritePokemons = async () => {
       const favoritePokemonIds = readFavoritePokemonIds()
       const filteredPokemons = pokemonList.filter(

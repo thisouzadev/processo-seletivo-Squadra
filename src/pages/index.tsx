@@ -14,31 +14,11 @@ import FormGroup from '@mui/material/FormGroup'
 import PokemonCard from '@/components/PokemonCard'
 import { Pokemon, PokemonType, Sprites } from '../types'
 import PokemonNaoEncontrado from '@/components/PokemonNaoEncontrado'
+import { POKEMON_TYPES } from '@/utils/pokemon-types'
 
 interface HomeProps {
   pokemonList: Pokemon[]
 }
-
-const POKEMON_TYPES = [
-  'normal',
-  'fighting',
-  'flying',
-  'poison',
-  'ground',
-  'rock',
-  'bug',
-  'ghost',
-  'steel',
-  'fire',
-  'water',
-  'grass',
-  'electric',
-  'psychic',
-  'ice',
-  'dragon',
-  'dark',
-  'fairy',
-] as const
 
 type PokemonTypeDetails = (typeof POKEMON_TYPES)[number]
 export const getStaticProps: GetStaticProps = async () => {

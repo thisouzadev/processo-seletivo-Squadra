@@ -7,6 +7,11 @@ import UnoptimizedImage from './UnoptimizedImage'
 import { Pokemon } from '../types'
 import { IconButton } from '@mui/material'
 import { Favorite } from '@mui/icons-material'
+import {
+  addPokemonToFavorites,
+  readFavoritePokemonIds,
+  removePokemonFromFavorites,
+} from '@/services/favoritePokemon'
 
 const typeColors: { [key: string]: string } = {
   normal: '#A8A77A',
@@ -35,30 +40,6 @@ interface PokemonCardProps {
 
 const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
-  const readFavoritePokemonIds = (): number[] => {
-    const favoritePokemonIdsJson = localStorage.getItem('favoritePokemonIds')
-    return favoritePokemonIdsJson ? JSON.parse(favoritePokemonIdsJson) : []
-  }
-
-  const saveFavoritePokemons = (pokemons: number[]): void => {
-    localStorage.setItem('favoritePokemonIds', JSON.stringify(pokemons))
-  }
-
-  const addPokemonToFavorites = (pokemonId: number): void => {
-    const favoritePokemons = readFavoritePokemonIds()
-    const newFavoritePokemons = [...favoritePokemons, pokemonId]
-
-    saveFavoritePokemons(newFavoritePokemons)
-  }
-
-  const removePokemonFromFavorites = (pokemonId: number): void => {
-    const favoritePokemons = readFavoritePokemonIds()
-    const newFavoritePokemons = favoritePokemons.filter(
-      (id) => id !== pokemonId,
-    )
-
-    saveFavoritePokemons(newFavoritePokemons)
-  }
 
   const updateFavoritePokemons = (
     pokemonId: number,
