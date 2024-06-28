@@ -36,9 +36,9 @@ const Header: React.FC = () => {
           <Tooltip title="Toggle light/dark theme">
             <IconButton color="inherit" onClick={toggleTheme}>
               {theme.palette.mode === 'dark' ? (
-                <Brightness7Icon />
-              ) : (
                 <Brightness4Icon />
+              ) : (
+                <Brightness7Icon />
               )}
             </IconButton>
           </Tooltip>
