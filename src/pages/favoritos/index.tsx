@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Container, Grid } from '@mui/material'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Container, Grid, Typography } from '@mui/material'
 import PokemonCard from '../../components/PokemonCard'
 import { Pokemon } from '../../types'
 import axios from 'axios'
@@ -44,26 +44,46 @@ export const getStaticProps: GetStaticProps<
 
 const FavoritePokemons: React.FC<FavoritePokemonsProps> = ({ pokemonList }) => {
   const [favoritePokemons, setFavoritePokemons] = useState<Pokemon[]>([])
+  const [isClick, setIsClick] = useState<boolean>(false)
+
+  const fetchFavoritePokemons = useCallback(() => {
+    const favoritePokemonIds = readFavoritePokemonIds()
+    const filteredPokemons = pokemonList.filter(
+      (pokemon) =>
+        pokemon.id !== undefined && favoritePokemonIds.includes(pokemon.id),
+    )
+    setFavoritePokemons(filteredPokemons)
+  }, [pokemonList])
 
   useEffect(() => {
-    const fetchFavoritePokemons = async () => {
-      const favoritePokemonIds = readFavoritePokemonIds()
-      const filteredPokemons = pokemonList.filter(
-        (pokemon) =>
-          pokemon.id !== undefined && favoritePokemonIds.includes(pokemon.id),
-      )
-      setFavoritePokemons(filteredPokemons)
-    }
-
     fetchFavoritePokemons()
-  }, [pokemonList])
+  }, [pokemonList, fetchFavoritePokemons])
+
+  useEffect(() => {
+    if (isClick) {
+      fetchFavoritePokemons()
+      setIsClick(false)
+    }
+  }, [isClick, fetchFavoritePokemons])
+
+  const handlePokemonCardClick = () => {
+    setIsClick(true)
+  }
 
   return (
     <Container>
-      <Grid container spacing={3}>
-        {favoritePokemons.map((pokemon) => (
-          <PokemonCard key={pokemon.id} pokemon={pokemon} />
-        ))}
+      <Grid container spacing={3} onClick={handlePokemonCardClick}>
+        {favoritePokemons.length > 0 ? (
+          favoritePokemons.map((pokemon) => (
+            <PokemonCard key={pokemon.id} pokemon={pokemon} />
+          ))
+        ) : (
+          <Grid item xs={12}>
+            <Typography variant="h6" align="center">
+              Nenhum Pokémon favorito encontrado.
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </Container>
   )
