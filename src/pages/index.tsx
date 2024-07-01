@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { GetStaticProps } from 'next'
 import { useForm } from 'react-hook-form'
@@ -13,7 +13,7 @@ import { Pokemon, PokemonType, Sprites } from '../types'
 import PokemonNotFound from '@/components/PokemonNotFound'
 import { POKEMON_TYPES } from '@/utils/pokemon-types'
 import FiltersModal from '@/components/FiltersModal'
-import { Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 
 interface HomeProps {
   pokemonList: Pokemon[]
@@ -120,6 +120,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
   const [visiblePokemon, setVisiblePokemon] = useState(10)
   const [typesModalOpen, setTypesModalOpen] = useState(false)
   const [weaknessesModalOpen, setWeaknessesModalOpen] = useState(false)
+  const [showScrollToTop, setShowScrollToTop] = useState(false)
 
   const { register, handleSubmit, control, watch } = useForm({
     defaultValues: {
@@ -139,6 +140,27 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
 
   const handleLoadMore = () => {
     setVisiblePokemon((prev) => Math.min(prev + 10, pokemonList.length))
+  }
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 500
+    ) {
+      handleLoadMore()
+    }
+    setShowScrollToTop(window.scrollY > 200)
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const filteredPokemonList = pokemonList.filter((pokemon) => {
@@ -208,12 +230,17 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
             ))
         )}
       </Grid>
-      <div
-        style={{
+      <Box
+        sx={{
           position: 'fixed',
           bottom: 20,
           left: '50%',
           transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: '1rem',
+          transition: 'opacity 0.5s',
+          opacity: showScrollToTop ? 1 : 0,
+          visibility: showScrollToTop ? 'visible' : 'hidden',
         }}
       >
         {visiblePokemon < filteredPokemonList.length && (
@@ -221,7 +248,10 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
             Buscar Mais
           </Button>
         )}
-      </div>
+        <Button variant="contained" color="secondary" onClick={scrollToTop}>
+          Voltar ao Topo
+        </Button>
+      </Box>
     </Container>
   )
 }
