@@ -38,3 +38,32 @@ export interface Sprites {
     }
   }
 }
+
+export interface FiltersModalProps {
+  open: boolean
+  onClose: () => void
+  control: any
+  filterType: 'types' | 'weaknesses'
+  filterLabel: string
+}
+
+export const POKEMON_TYPES = [
+  'normal',
+  'fighting',
+  'flying',
+  'poison',
+  'ground',
+  'rock',
+  'bug',
+  'ghost',
+  'steel',
+  'fire',
+  'water',
+  'grass',
+  'electric',
+  'psychic',
+  'ice',
+  'dragon',
+  'dark',
+  'fairy',
+] as const

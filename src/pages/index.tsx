@@ -1,26 +1,26 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { GetStaticProps } from 'next'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
+
 import TextField from '@mui/material/TextField'
-import FormControl from '@mui/material/FormControl'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import FormGroup from '@mui/material/FormGroup'
+
 import PokemonCard from '@/components/PokemonCard'
 import { Pokemon, PokemonType, Sprites } from '../types'
-import PokemonNaoEncontrado from '@/components/PokemonNaoEncontrado'
+import PokemonNotFound from '@/components/PokemonNotFound'
 import { POKEMON_TYPES } from '@/utils/pokemon-types'
+import FiltersModal from '@/components/FiltersModal'
+import { Stack } from '@mui/material'
 
 interface HomeProps {
   pokemonList: Pokemon[]
 }
 
 type PokemonTypeDetails = (typeof POKEMON_TYPES)[number]
+
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const response = await axios.get(
@@ -118,6 +118,9 @@ export const limitedPromiseAll = async (
 
 const Home: React.FC<HomeProps> = ({ pokemonList }) => {
   const [visiblePokemon, setVisiblePokemon] = useState(10)
+  const [typesModalOpen, setTypesModalOpen] = useState(false)
+  const [weaknessesModalOpen, setWeaknessesModalOpen] = useState(false)
+
   const { register, handleSubmit, control, watch } = useForm({
     defaultValues: {
       name: '',
@@ -157,58 +160,46 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
 
   return (
     <Container sx={{ mb: '2rem' }}>
-      <form onSubmit={handleSubmit(() => {})}>
-        <TextField
-          label="Search by Name"
-          variant="outlined"
-          fullWidth
-          {...register('name')}
-          style={{ marginBottom: '20px' }}
-        />
-        <FormControl component="fieldset" style={{ marginBottom: '20px' }}>
-          <Typography variant="h6">Filter by Types</Typography>
-          <FormGroup row>
-            {POKEMON_TYPES.map((type) => (
-              <FormControlLabel
-                key={type}
-                control={
-                  <Controller
-                    name={`types.${type}` as const}
-                    control={control}
-                    render={({ field }) => (
-                      <Checkbox {...field} checked={Boolean(field.value)} />
-                    )}
-                  />
-                }
-                label={type}
-              />
-            ))}
-          </FormGroup>
-        </FormControl>
-        <FormControl component="fieldset" style={{ marginBottom: '20px' }}>
-          <Typography variant="h6">Filter by Weaknesses</Typography>
-          <FormGroup row>
-            {POKEMON_TYPES.map((type) => (
-              <FormControlLabel
-                key={type}
-                control={
-                  <Controller
-                    name={`weaknesses.${type}` as const}
-                    control={control}
-                    render={({ field }) => (
-                      <Checkbox {...field} checked={Boolean(field.value)} />
-                    )}
-                  />
-                }
-                label={type}
-              />
-            ))}
-          </FormGroup>
-        </FormControl>
-      </form>
+      <Container sx={{ mb: '2rem' }}>
+        <form onSubmit={handleSubmit(() => {})}>
+          <TextField
+            label="Search by Name"
+            variant="outlined"
+            fullWidth
+            {...register('name')}
+            style={{ marginBottom: '20px' }}
+          />
+          <Stack direction="row" spacing={2}>
+            <Button variant="outlined" onClick={() => setTypesModalOpen(true)}>
+              Filter by Types
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => setWeaknessesModalOpen(true)}
+            >
+              Filter by Weaknesses
+            </Button>
+          </Stack>
+        </form>
+      </Container>
+
+      <FiltersModal
+        open={typesModalOpen}
+        onClose={() => setTypesModalOpen(false)}
+        control={control}
+        filterType="types"
+        filterLabel="Types"
+      />
+      <FiltersModal
+        open={weaknessesModalOpen}
+        onClose={() => setWeaknessesModalOpen(false)}
+        control={control}
+        filterType="weaknesses"
+        filterLabel="Weaknesses"
+      />
       <Grid container spacing={3}>
         {filteredPokemonList.length === 0 ? (
-          <PokemonNaoEncontrado />
+          <PokemonNotFound />
         ) : (
           filteredPokemonList
             .slice(0, visiblePokemon)
