@@ -1,3 +1,5 @@
+import { Control } from 'react-hook-form'
+
 export interface Pokemon {
   name: string
   url: string
@@ -39,10 +41,16 @@ export interface Sprites {
   }
 }
 
+export interface FormValues {
+  name: string
+  types: Record<string, boolean>
+  weaknesses: Record<string, boolean>
+}
+
 export interface FiltersModalProps {
   open: boolean
   onClose: () => void
-  control: any
+  control: Control<FormValues>
   filterType: 'types' | 'weaknesses'
   filterLabel: string
 }
