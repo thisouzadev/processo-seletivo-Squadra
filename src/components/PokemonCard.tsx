@@ -111,10 +111,10 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
               </IconButton>
             </CardContent>
             <CardContent>
-              <Typography variant="body2" color="textSecondary">
+              <Typography gutterBottom variant="h6">
                 Type: {pokemon.details.types.join(', ')}
               </Typography>
-              <Typography variant="body2" color="textSecondary">
+              <Typography gutterBottom variant="h6">
                 Weaknesses:{' '}
                 {pokemon?.details.weaknesses
                   ? pokemon.details.weaknesses.join(', ')
