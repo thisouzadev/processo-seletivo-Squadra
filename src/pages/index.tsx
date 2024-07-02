@@ -122,7 +122,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
   const [weaknessesModalOpen, setWeaknessesModalOpen] = useState<boolean>(false)
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false)
 
-  const { register, handleSubmit, control, watch } = useForm({
+  const { register, handleSubmit, control, watch, setValue } = useForm({
     defaultValues: {
       name: '',
       types: POKEMON_TYPES.reduce(
@@ -163,6 +163,14 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const clearFilters = () => {
+    setValue('name', '')
+    POKEMON_TYPES.forEach((type) => {
+      setValue(`types.${type}`, false)
+      setValue(`weaknesses.${type}`, false)
+    })
+  }
+
   const filteredPokemonList = pokemonList.filter((pokemon) => {
     const nameMatch = pokemon.name
       .toLowerCase()
@@ -200,6 +208,18 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
               onClick={() => setWeaknessesModalOpen(true)}
             >
               Filter by Weaknesses
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              disabled={
+                Object.values(filters.types).every((value) => !value) &&
+                Object.values(filters.weaknesses).every((value) => !value) &&
+                filters.name === ''
+              }
+              onClick={clearFilters}
+            >
+              Clear Filters
             </Button>
           </Stack>
         </form>

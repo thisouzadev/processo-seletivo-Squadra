@@ -61,8 +61,6 @@ const DetailsModal: React.FC<DetailsModalProps> = ({
           const evolutions: Evolution[] = []
 
           const extractEvolutionDetails = async (evolution: Species) => {
-            console.log(evolution)
-
             const id = parseInt(
               evolution.species.url.split('/').slice(-2, -1)[0],
             )
@@ -83,7 +81,6 @@ const DetailsModal: React.FC<DetailsModalProps> = ({
                 }
               })
           }
-          console.log('chain', chain)
 
           extractEvolutionDetails(chain)
           return evolutions
