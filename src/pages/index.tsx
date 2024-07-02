@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 
 import PokemonCard from '@/components/PokemonCard'
-import { Pokemon, PokemonType, Sprites } from '../types'
+import { Pokemon, PokemonType, PokemonWeaknesses, Sprites } from '../types'
 import PokemonNotFound from '@/components/PokemonNotFound'
 import { POKEMON_TYPES } from '@/utils/pokemon-types'
 import FiltersModal from '@/components/FiltersModal'
@@ -69,7 +69,7 @@ export const limitedPromiseAll = async (
           )
           const weaknesses: string[] =
             weaknessesResponse.data.damage_relations.double_damage_from.map(
-              (weakness: { name: string }) => weakness.name,
+              (weakness: PokemonWeaknesses) => weakness.name,
             )
           const id: number = detailsResponse.data.id
           const sprites: Sprites = detailsResponse.data.sprites
@@ -118,9 +118,9 @@ export const limitedPromiseAll = async (
 
 const Home: React.FC<HomeProps> = ({ pokemonList }) => {
   const [visiblePokemon, setVisiblePokemon] = useState(10)
-  const [typesModalOpen, setTypesModalOpen] = useState(false)
-  const [weaknessesModalOpen, setWeaknessesModalOpen] = useState(false)
-  const [showScrollToTop, setShowScrollToTop] = useState(false)
+  const [typesModalOpen, setTypesModalOpen] = useState<boolean>(false)
+  const [weaknessesModalOpen, setWeaknessesModalOpen] = useState<boolean>(false)
+  const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false)
 
   const { register, handleSubmit, control, watch } = useForm({
     defaultValues: {

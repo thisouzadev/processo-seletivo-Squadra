@@ -1,11 +1,38 @@
 import { Control } from 'react-hook-form'
 
+export interface PokemonStats {
+  HP: number
+  Attack: number
+  Defense: number
+  SpecialAttack: number
+  SpecialDefense: number
+  Speed: number
+}
+
+export interface Evolution {
+  id: number
+  name: string
+  types: string[]
+  sprite: string
+}
+export interface Species {
+  species: {
+    name: string
+    url: string
+  }
+  evolves_to: Species[]
+}
 export interface Pokemon {
   name: string
   url: string
   id?: number
   details: {
+    stats?: PokemonStats
     types: string[]
+    height?: number
+    weight?: number
+    category?: string
+    abilities?: string
     weaknesses?: string[]
     sprites: {
       front_default: string | null
@@ -26,6 +53,10 @@ export interface PokemonType {
   type: {
     name: string
   }
+}
+
+export interface PokemonWeaknesses {
+  name: string
 }
 
 export interface Sprites {

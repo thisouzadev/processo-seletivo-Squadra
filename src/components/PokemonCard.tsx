@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import UnoptimizedImage from './UnoptimizedImage'
 import { Pokemon } from '../types'
-import { IconButton } from '@mui/material'
+import { Button, IconButton } from '@mui/material'
 import { Favorite } from '@mui/icons-material'
 import {
   addPokemonToFavorites,
@@ -13,6 +13,7 @@ import {
   removePokemonFromFavorites,
 } from '@/services/favoritePokemon'
 import { typeColors } from '@/styles/typeColor'
+import DetailsModal from './DetailsModal'
 
 interface PokemonCardProps {
   pokemon: Pokemon
@@ -20,6 +21,7 @@ interface PokemonCardProps {
 
 const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
+  const [detailsModalOpen, setDetailsModalOpen] = useState<boolean>(false)
 
   const updateFavoritePokemons = (
     pokemonId: number,
@@ -111,16 +113,30 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon }) => {
               </IconButton>
             </CardContent>
             <CardContent>
-              <Typography gutterBottom variant="h6">
+              <Typography gutterBottom component="div">
                 Type: {pokemon.details.types.join(', ')}
               </Typography>
-              <Typography gutterBottom variant="h6">
+              <Typography gutterBottom component="div">
                 Weaknesses:{' '}
                 {pokemon?.details.weaknesses
                   ? pokemon.details.weaknesses.join(', ')
                   : 'Nenhuma fraqueza conhecida'}
               </Typography>
             </CardContent>
+            <Typography align="center">
+              <Button
+                sx={{ color: 'white', borderColor: 'white' }}
+                variant="outlined"
+                onClick={() => setDetailsModalOpen(true)}
+              >
+                Details
+              </Button>
+            </Typography>
+            <DetailsModal
+              open={detailsModalOpen}
+              onClose={() => setDetailsModalOpen(false)}
+              pokemonId={pokemon.id!}
+            />
           </>
         )}
       </Card>
