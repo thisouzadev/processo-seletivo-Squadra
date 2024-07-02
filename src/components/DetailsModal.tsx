@@ -276,7 +276,6 @@ const DetailsModal: React.FC<DetailsModalProps> = ({
                       <Grid item xs={12} sm={6} md={3}>
                         <Card
                           sx={{
-                            background: '#f5f5f5',
                             borderRadius: 2,
                             boxShadow: 3,
                             padding: 2,
