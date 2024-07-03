@@ -24,7 +24,7 @@ type PokemonTypeDetails = (typeof POKEMON_TYPES)[number]
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const response = await axios.get(
-      'https://pokeapi.co/api/v2/pokemon?limit=1000',
+      'https://pokeapi.co/api/v2/pokemon?limit=1015',
     )
     const pokemonList: Pokemon[] = await limitedPromiseAll(
       response.data.results.map((pokemon: { name: string; url: string }) => ({

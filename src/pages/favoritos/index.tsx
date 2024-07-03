@@ -16,7 +16,7 @@ export const getStaticProps: GetStaticProps<
 > = async () => {
   try {
     const response = await axios.get(
-      'https://pokeapi.co/api/v2/pokemon?limit=1000',
+      'https://pokeapi.co/api/v2/pokemon?limit=1015',
     )
 
     const pokemonList: Pokemon[] = await limitedPromiseAll(
