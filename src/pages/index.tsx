@@ -138,6 +138,10 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
 
   const filters = watch()
 
+  useEffect(() => {
+    setVisiblePokemon(10)
+  }, [filters])
+
   const handleLoadMore = () => {
     setVisiblePokemon((prev) => Math.min(prev + 10, pokemonList.length))
   }

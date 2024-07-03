@@ -140,7 +140,7 @@ const DetailsModal: React.FC<DetailsModalProps> = ({
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       {pokemon.details && (
         <>
-          <DialogTitle>
+          <DialogTitle align="center">
             <Typography component="h1">{pokemon.name}</Typography>
             <Typography component="h1">ID: {pokemon.id}</Typography>
           </DialogTitle>
@@ -189,7 +189,11 @@ const DetailsModal: React.FC<DetailsModalProps> = ({
                     />
                   </Card>
                 </div>
-                <Typography variant="body1" style={{ marginTop: '16px' }}>
+                <Typography
+                  variant="body1"
+                  align="center"
+                  style={{ marginTop: '16px' }}
+                >
                   <strong>Stats</strong>
                   <StatsRadarChart stats={pokemon.details.stats!} />
                 </Typography>
@@ -263,7 +267,7 @@ const DetailsModal: React.FC<DetailsModalProps> = ({
             </Grid>
 
             <Grid item xs={12} style={{ marginTop: '16px' }}>
-              <Typography variant="body1">
+              <Typography variant="body1" align="center">
                 <strong>Evolutions</strong>
               </Typography>
               <Grid container spacing={2} alignItems="center">
@@ -326,7 +330,7 @@ const DetailsModal: React.FC<DetailsModalProps> = ({
                                       alignItems: 'center',
                                     }}
                                   >
-                                    <Typography variant="body1">
+                                    <Typography variant="body1" align="center">
                                       {type}
                                     </Typography>
                                   </Card>
