@@ -13,7 +13,7 @@ import { Pokemon, PokemonType, PokemonWeaknesses, Sprites } from '../types'
 import PokemonNotFound from '@/components/PokemonNotFound'
 import { POKEMON_TYPES } from '@/utils/pokemon-types'
 import FiltersModal from '@/components/FiltersModal'
-import { Box, Stack } from '@mui/material'
+import { Autocomplete, Box, Stack } from '@mui/material'
 
 interface HomeProps {
   pokemonList: Pokemon[]
@@ -173,6 +173,11 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
       setValue(`types.${type}`, false)
       setValue(`weaknesses.${type}`, false)
     })
+    setVisiblePokemon(10)
+  }
+
+  const handlePokemonSelect = (pokemon: Pokemon | null) => {
+    setValue('name', pokemon?.name || '')
   }
 
   const filteredPokemonList = pokemonList.filter((pokemon) => {
@@ -196,12 +201,21 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
     <Container sx={{ mb: '2rem' }}>
       <Container sx={{ mb: '2rem' }}>
         <form onSubmit={handleSubmit(() => {})}>
-          <TextField
-            label="Search by Name"
-            variant="outlined"
-            fullWidth
-            {...register('name')}
-            style={{ marginBottom: '20px' }}
+          <Autocomplete
+            id="pokemon-search"
+            options={pokemonList}
+            getOptionLabel={(option) => option.name}
+            onChange={(event, newValue) => handlePokemonSelect(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search Pokémon"
+                variant="outlined"
+                fullWidth
+                {...register('name')}
+                style={{ marginBottom: '20px' }}
+              />
+            )}
           />
           <Stack direction="row" spacing={2}>
             <Button variant="outlined" onClick={() => setTypesModalOpen(true)}>
