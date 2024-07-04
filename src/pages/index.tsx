@@ -5,9 +5,7 @@ import { useForm } from 'react-hook-form'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-
 import TextField from '@mui/material/TextField'
-
 import PokemonCard from '@/components/PokemonCard'
 import { Pokemon, PokemonType, PokemonWeaknesses, Sprites } from '../types'
 import PokemonNotFound from '@/components/PokemonNotFound'
@@ -121,6 +119,9 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
   const [typesModalOpen, setTypesModalOpen] = useState<boolean>(false)
   const [weaknessesModalOpen, setWeaknessesModalOpen] = useState<boolean>(false)
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false)
+  const [sortOrder, setSortOrder] = useState<
+    'highest' | 'lowest' | 'az' | 'za'
+  >('lowest')
 
   const { register, handleSubmit, control, watch, setValue } = useForm({
     defaultValues: {
@@ -176,6 +177,23 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
     setValue('name', pokemon?.name || '')
   }
 
+  const getSortedPokemonList = (list: Pokemon[]) => {
+    const sortedList = [...list]
+
+    switch (sortOrder) {
+      case 'lowest':
+        return sortedList.sort((a, b) => a.id! - b.id!)
+      case 'highest':
+        return sortedList.sort((a, b) => b.id! - a.id!)
+      case 'az':
+        return sortedList.sort((a, b) => a.name.localeCompare(b.name))
+      case 'za':
+        return sortedList.sort((a, b) => b.name.localeCompare(a.name))
+      default:
+        return sortedList
+    }
+  }
+
   const filteredPokemonList = pokemonList.filter((pokemon) => {
     const nameMatch = pokemon.name
       .toLowerCase()
@@ -192,6 +210,8 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
     )
     return nameMatch && typesMatch && weaknessesMatch
   })
+
+  const sortedPokemonList = getSortedPokemonList(filteredPokemonList)
 
   return (
     <Container sx={{ mb: '2rem' }}>
@@ -253,11 +273,55 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
         filterType="weaknesses"
         filterLabel="Weaknesses"
       />
+      <Stack direction="row" spacing={2} sx={{ mb: '1rem' }}>
+        <Button
+          variant="outlined"
+          onClick={() => setSortOrder('lowest')}
+          sx={{
+            backgroundColor:
+              sortOrder === 'lowest' ? 'primary.main' : 'inherit',
+            color: sortOrder === 'lowest' ? 'white' : 'inherit',
+          }}
+        >
+          Menor Número
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => setSortOrder('highest')}
+          sx={{
+            backgroundColor:
+              sortOrder === 'highest' ? 'primary.main' : 'inherit',
+            color: sortOrder === 'highest' ? 'white' : 'inherit',
+          }}
+        >
+          Maior Número
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => setSortOrder('az')}
+          sx={{
+            backgroundColor: sortOrder === 'az' ? 'primary.main' : 'inherit',
+            color: sortOrder === 'az' ? 'white' : 'inherit',
+          }}
+        >
+          A-Z
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => setSortOrder('za')}
+          sx={{
+            backgroundColor: sortOrder === 'za' ? 'primary.main' : 'inherit',
+            color: sortOrder === 'za' ? 'white' : 'inherit',
+          }}
+        >
+          Z-A
+        </Button>
+      </Stack>
       <Grid container spacing={3}>
-        {filteredPokemonList.length === 0 ? (
+        {sortedPokemonList.length === 0 ? (
           <PokemonNotFound />
         ) : (
-          filteredPokemonList
+          sortedPokemonList
             .slice(0, visiblePokemon)
             .map((pokemon) => (
               <PokemonCard key={pokemon.id} pokemon={pokemon} />
@@ -277,7 +341,7 @@ const Home: React.FC<HomeProps> = ({ pokemonList }) => {
           visibility: showScrollToTop ? 'visible' : 'hidden',
         }}
       >
-        {visiblePokemon < filteredPokemonList.length && (
+        {visiblePokemon < sortedPokemonList.length && (
           <Button variant="contained" color="primary" onClick={handleLoadMore}>
             Buscar Mais
           </Button>
